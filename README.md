@@ -1,165 +1,89 @@
-# Bounds Trading Strategy - S&P 500 Backtesting Project
+# Bounds Trading Strategy
 
 ## Overview
+This project implements a trading strategy that:
+- **Goes LONG when price breaks above upper bound**
+- **Goes SHORT when price breaks below lower bound**
+- Tests the strategy on S&P 500 30-minute data
 
-This project implements and backtests a **bounds trading strategy** for the S&P 500 index using 30-minute intraday data. The strategy identifies dynamic upper and lower bounds based on historical volatility and executes trades when price breaks through these levels.
+## Files in This Project
+- `backtest.py` - Basic trading strategy
+- `enhanced_backtest.py` - Improved strategy with risk management
+- `sp500_30min_14d.csv` - Price data
+- `daily_noise_bounds.csv` - Trading bounds data
 
-## Strategy Description
+## How to Run
 
-### Trading Rules
-- **📈 LONG (Call)**: Enter long position when price moves **above the upper bound**
-- **📉 SHORT**: Enter short position when price moves **below the lower bound**
-- **🚪 EXIT**: Close positions at market close (19:30 UTC) or on signal reversal
-- **⚠️ RISK**: Stop losses and position sizing for risk management
-
-### Bounds Calculation
-The bounds are calculated using:
-- Historical volatility (sigma) for each 30-minute time slot
-- Previous day's close and current day's open prices
-- **Upper Bound**: `max(today_open, yesterday_close) × (1 + sigma)`
-- **Lower Bound**: `min(today_open, yesterday_close) × (1 - sigma)`
-
-## Files Description
-
-### Core Strategy Files
-- **`backtest.py`** - Original bounds trading strategy implementation
-- **`enhanced_backtest.py`** - Improved version with stop losses and risk management
-- **`Intraday_bounds.py`** - Bounds calculation logic and visualization
-- **`2_week_bounds.py`** - Alternative bounds calculation method
-
-### Data Files
-- **`sp500_30min_14d.csv`** - S&P 500 30-minute price data (14 days)
-- **`daily_noise_bounds.csv`** - Pre-calculated daily bounds
-- **`noise_bounds_sample.csv`** - Sample bounds data
-
-### Results & Documentation
-- **`backtest_results.png`** - Original strategy performance charts
-- **`enhanced_backtest_results.png`** - Enhanced strategy performance charts
-- **`Model_Graphical_example.png`** - Bounds visualization example
-- **`backtest_summary.md`** - Original strategy analysis
-- **`final_strategy_report.md`** - Comprehensive strategy comparison and analysis
-
-## Quick Start
-
-### Prerequisites
+### Step 1: Install Python Packages
 ```bash
 pip install pandas matplotlib numpy
 ```
 
-### Run the Backtest
+### Step 2: Run the Strategy
 ```bash
-# Original strategy
+# Basic version
 python3 backtest.py
 
-# Enhanced strategy (recommended)
+# Enhanced version (recommended)
 python3 enhanced_backtest.py
 ```
 
-### Generate Bounds
-```bash
-# Calculate intraday bounds
-python3 Intraday_bounds.py
+## Results
+
+The enhanced strategy achieved:
+- **Return**: +0.17% (vs -0.48% for basic version)
+- **Win Rate**: 33.3% (vs 22.2% for basic version)
+- **Risk Control**: 0.24% maximum drawdown
+
+## What You'll See
+
+When you run the backtest, you'll get:
+1. Trade entries and exits printed to console
+2. Performance summary with returns and win rate
+3. Chart files saved as PNG images
+
+## Strategy Logic
+
+1. Calculate upper and lower bounds using historical volatility
+2. When price goes above upper bound → Enter LONG position
+3. When price goes below lower bound → Enter SHORT position
+4. Exit at market close or when opposite signal occurs
+
+## Enhanced Features
+
+The enhanced version includes:
+- 1.5% stop loss protection
+- Better position sizing
+- Reduced false signals
+- Risk management
+
+## Example Output
+```
+LONG entry at 2025-06-16 13:30:00: Price=6036.65, Upper=6021.35
+EXIT Market Close: PnL=$-49.19, New AUM=$99950.81
+SHORT entry at 2025-06-17 17:30:00: Price=5987.51, Lower=5991.35
+EXIT Market Close: PnL=$81.61, New AUM=$100032.43
+
+=== BACKTEST RESULTS ===
+Final AUM: $100,166.29
+Total Return: 0.17%
+Number of Trades: 6
+Win Rate: 33.3%
 ```
 
-## Performance Results
+## Requirements
+- Python 3.x
+- pandas
+- matplotlib  
+- numpy
 
-| Strategy | Return | Win Rate | Trades | Max Drawdown | Profit Factor |
-|----------|--------|----------|--------|--------------|---------------|
-| **Original** | -0.48% | 22.2% | 9 | N/A | N/A |
-| **Enhanced** | **+0.17%** | **33.3%** | 6 | **0.24%** | **1.57** |
+All packages can be installed with: `pip install pandas matplotlib numpy`
 
-### Key Improvements in Enhanced Strategy
-- ✅ **1.5% Stop Loss** - Limits downside risk
-- ✅ **0.05% Bounds Buffer** - Reduces false breakouts  
-- ✅ **95% Position Sizing** - Controls exposure
-- ✅ **Profit Factor 1.57** - Indicates profitability
+## What the Strategy Does
+- Calculates dynamic trading bounds based on volatility
+- Identifies breakout points above/below these bounds
+- Executes long/short trades automatically
+- Manages risk with stop losses and position sizing
+- Tracks performance and generates reports
 
-## Data Period
-- **Instrument**: S&P 500 Index (^GSPC)
-- **Timeframe**: 30-minute intervals
-- **Period**: June 16 - July 2, 2025 (12 trading days)
-- **Data Points**: 156 observations
-
-## Key Features
-
-### Risk Management
-- Stop loss implementation (1.5% of entry price)
-- Position sizing based on available capital
-- Maximum drawdown monitoring
-- Commission and slippage modeling
-
-### Signal Quality
-- Bounds buffering to avoid false breakouts
-- High/Low data utilization for stop triggers
-- Market session timing (13:30-19:30 UTC)
-- Signal reversal detection
-
-### Performance Analytics
-- Win rate and profit factor calculation
-- Maximum drawdown analysis
-- Trade-by-trade logging
-- Comprehensive visualization
-
-## Strategy Logic Flow
-
-1. **Market Open** (13:30 UTC) → Calculate position size
-2. **Price Monitoring** → Check for bound breakouts
-3. **Entry Signal** → Execute trade with stop loss
-4. **Exit Conditions** → Market close or signal reversal
-5. **Performance Tracking** → Log trade and update equity
-
-## Usage Examples
-
-### Basic Backtest
-```python
-# Load and run basic strategy
-python3 backtest.py
-```
-
-### Enhanced Strategy with Risk Management
-```python
-# Run enhanced version
-python3 enhanced_backtest.py
-```
-
-### Visualize Bounds
-```python
-# Generate bounds chart
-python3 Intraday_bounds.py
-```
-
-## Results Summary
-
-The **enhanced bounds trading strategy** demonstrates:
-- ✅ **Positive Returns**: +0.17% over 12 trading days
-- ✅ **Controlled Risk**: Maximum drawdown of only 0.24%
-- ✅ **Profitable System**: Profit factor of 1.57
-- ✅ **Risk Management**: No stop loss triggers needed
-
-## Next Steps
-
-1. **Extend Backtesting** - Test on longer time periods
-2. **Parameter Optimization** - Fine-tune bounds calculation
-3. **Market Regime Detection** - Adapt to different market conditions
-4. **Paper Trading** - Validate real-time performance
-
-## Technical Requirements
-
-- **Python 3.x**
-- **pandas** - Data manipulation
-- **matplotlib** - Visualization  
-- **numpy** - Numerical calculations
-
-## Contributing
-
-This project demonstrates systematic trading strategy development with:
-- Data preprocessing and cleaning
-- Strategy implementation and backtesting
-- Risk management and position sizing
-- Performance analysis and reporting
-
----
-
-**⚠️ Disclaimer**: This is for educational and research purposes only. Past performance does not guarantee future results. Always conduct thorough testing before live trading.
-
-*Last updated: July 3, 2025*
+This is a complete backtesting system that shows whether the bounds trading approach works on historical S&P 500 data.
