@@ -176,25 +176,5 @@ MAX_POSITION_SIZE = 0.8  # 80% max position
 - **Timeframe**: 14-day rolling window
 - **Market Hours**: 13:30-19:30 UTC (9:30-15:30 ET)
 
-## Important Notes
-
-⚠️ **Risk Disclaimer**: This strategy is for educational and research purposes only. Past performance does not guarantee future results. Always conduct thorough testing before live implementation.
-
-🔧 **Development Status**: The strategy shows promise with positive risk-adjusted returns but requires further optimization and testing before live trading.
-
-📊 **Data Quality**: Ensure clean price data and proper handling of market holidays and gaps.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Add comprehensive tests for new features
-4. Submit a pull request with detailed description
-
-## License
-
-This project is for educational use. Please review and comply with your broker's API terms and local financial regulations before any live implementation.
-
----
 
 *Strategy developed and tested on S&P 500 30-minute data from June 16 - July 2, 2025*
